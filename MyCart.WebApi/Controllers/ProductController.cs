@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyCart.Repository.Products;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyCart.Repository.Products.Dtos;
 using MyCart.Service.Dtos;
 using MyCart.Service.Products;
 
@@ -73,6 +74,7 @@ namespace MyCart.WebApi.Controllers
             await _productService.DeleteProductAsync(id);
             return NoContent(); // Return a NoContent response after deletion
         }
+        [Authorize]
         [HttpPost("SearchProduct")]
         public async Task<ActionResult<List<ProductDTO>>>SearchProduct([FromForm]SearchProductDto? searchProductDto)
         {

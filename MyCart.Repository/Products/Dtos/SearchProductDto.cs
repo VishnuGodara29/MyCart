@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyCart.Repository.Products
+namespace MyCart.Repository.Products.Dtos
 {
     public class SearchProductDto
     {

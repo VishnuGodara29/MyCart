@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyCart.Domain.Products;
 using MyCart.Repository.Products;
+using MyCart.Repository.Products.Dtos;
 using MyCart.Service.Dtos;
 
 namespace MyCart.Service.Products

@@ -1,5 +1,6 @@
 ﻿using MyCart.Domain.Products;
 using MyCart.Repository.GenericRepository;
+using MyCart.Repository.Products.Dtos;
 
 namespace MyCart.Repository.Products
 {

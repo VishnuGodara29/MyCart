@@ -2,6 +2,7 @@
 using MyCarData;
 using MyCart.Domain.Products;
 using MyCart.Repository.GenericRepositorys;
+using MyCart.Repository.Products.Dtos;
 namespace MyCart.Repository.Products
 {
     public class ProductRepository : GenericRepository<Product>, IProductRepository
