@@ -15,6 +15,7 @@ namespace MyCart.Service.Dtos
         public int ?CategoryId { get; set; }
         public DateTime? CreateDate { get; set; } 
         public DateTime? UpdateDate { get; set; } 
+        public CategoryDto Category { get; set; }
     }
 
 

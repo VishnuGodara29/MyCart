@@ -31,7 +31,7 @@ namespace MyCart.Repository.Products
 
         public async Task<IEnumerable<Product>> SearchProductAsync(SearchProductDto searchProductDto)
         {
-            var query = await _context.Products.ToListAsync();
+            var query = await _context.Products.Include(x=>x.Category).ToListAsync();
 
             if (!string.IsNullOrWhiteSpace(searchProductDto.Name))
             {
