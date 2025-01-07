@@ -17,6 +17,7 @@ using MyCart.Repository.Users;
 using MyCart.Service.CartProducts;
 using MyCart.Service.Carts;
 using MyCart.Service.Categorys;
+using MyCart.Service.Emails;
 using MyCart.Service.JWTSeriveses;
 using MyCart.Service.Mapping;
 using MyCart.Service.OrderProducts;
@@ -59,6 +60,9 @@ namespace MyCart.WebApi
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
             builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
+            
+            //email..
+            builder.Services.AddTransient<IEmailService,EmailService>();
 
             builder.Services.AddScoped<IUserLoginRepository, UserLoginsRepository>();
 

@@ -1,4 +1,5 @@
 ﻿using MyCart.Domain.Products;
+using MyCart.Repository.Products;
 using MyCart.Service.Dtos;
 
 namespace MyCart.Service.Products
@@ -12,5 +13,6 @@ namespace MyCart.Service.Products
         Task<bool> CreateProductAsync(CreateProductDto productDto);
         Task<ProductDTO> UpdateProductAsync(int id, ProductDTO productDto);
         Task DeleteProductAsync(int id);
+        Task<List<ProductDTO>> SearchProductAsync(SearchProductDto searchProductDto);
     }
 }

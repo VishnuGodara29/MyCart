@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyCart.Repository.Products;
 using MyCart.Service.Dtos;
 using MyCart.Service.Products;
 
@@ -71,6 +72,16 @@ namespace MyCart.WebApi.Controllers
         {
             await _productService.DeleteProductAsync(id);
             return NoContent(); // Return a NoContent response after deletion
+        }
+        [HttpPost("SearchProduct")]
+        public async Task<ActionResult<List<ProductDTO>>>SearchProduct([FromForm]SearchProductDto? searchProductDto)
+        {
+          var data=  await _productService.SearchProductAsync(searchProductDto);
+            if(data==null)
+            {
+                return NotFound("No data found");
+            }
+            return Ok(data);
         }
     }
 }

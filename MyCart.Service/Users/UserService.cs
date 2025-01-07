@@ -4,6 +4,7 @@ using MyCart.Domain.Users;
 using MyCart.Repository.Logins;
 using MyCart.Repository.Users;
 using MyCart.Service.Dtos;
+using MyCart.Service.Emails;
 
 namespace MyCart.Service.Users
 {
@@ -13,12 +14,14 @@ namespace MyCart.Service.Users
         private readonly IMapper _mapper;
 
         private readonly IUserLoginRepository _userLoginRepository;
+        private readonly IEmailService _emailService;
         // Constructor injection for repository and AutoMapper
-        public UserService(IUserRepository userRepository, IMapper mapper, IUserLoginRepository userLoginRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper, IUserLoginRepository userLoginRepository, IEmailService emailService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _userLoginRepository = userLoginRepository;
+            _emailService = emailService;
         }
 
         // Get user by Id
@@ -99,6 +102,10 @@ namespace MyCart.Service.Users
                 UserId=user.Id,
             };
             await _userLoginRepository.AddAsync(userlogIn);
+            string subject = "For user Creation";
+            string body = $"This Mail for the UserName and password UserName={userDto.Name} and password ={userDto.Password}";
+
+            await _emailService.SendEmail(userDto.Email, subject, body);
            
 
 

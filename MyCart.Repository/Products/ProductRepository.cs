@@ -10,6 +10,7 @@ namespace MyCart.Repository.Products
 
         public ProductRepository(DataContext context) : base(context)
         {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<Product>> GetActiveProductsAsync()
@@ -19,12 +20,7 @@ namespace MyCart.Repository.Products
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
-        {
-            return await _context.Products
-                .Where(p => p.Name.Contains(name))
-                .ToListAsync();
-        }
+
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
@@ -33,11 +29,33 @@ namespace MyCart.Repository.Products
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> SearchProductAsync(SearchProductDto searchProductDto)
+        {
+            var query = await _context.Products.ToListAsync();
 
+            if (!string.IsNullOrWhiteSpace(searchProductDto.Name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchProductDto.Name.ToLower())).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(searchProductDto.Description))
+            {
+                query= query.Where(x=>x.Description.Contains(searchProductDto.Description)).ToList();
 
+            }
+            if (searchProductDto.CategoryId.HasValue&&searchProductDto.CategoryId.Value!=0)
+            {
+                query= query.Where(x=>x.CategoryId==searchProductDto.CategoryId.Value).ToList();
+            }
+            if (searchProductDto.CreateDate.HasValue)
+            {
+                query= query.Where(x=>x.CreateDate<=searchProductDto.CreateDate).ToList();
+            }
+            if(searchProductDto.UpdateDate.HasValue)
+            {
+                query= query.Where(x => x.UpdateDate >= searchProductDto.UpdateDate).ToList();
 
-       
-
-       
+            }
+            return query;
+        }
     }
 }

@@ -45,11 +45,8 @@ namespace MyCart.Service.Products
         public async Task<bool> CreateProductAsync(CreateProductDto productDto)
         {
             var product = _mapper.Map<Product>(productDto);
-           var data=  _productRepository.AddAsync(product);
-            if (data == null)
-            {
-                return false;
-            }
+            await _productRepository.AddAsync(product);
+           
             return true;
         }
 
@@ -77,6 +74,12 @@ namespace MyCart.Service.Products
             }
 
             await _productRepository.DeleteAsync(id);
+        }
+
+        public async Task<List<ProductDTO>> SearchProductAsync(SearchProductDto searchProductDto)
+        {
+            var product = await _productRepository.SearchProductAsync(searchProductDto);
+            return _mapper.Map<List<ProductDTO>>(product);
         }
     }
 }
