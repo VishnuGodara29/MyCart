@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using MyCart.Repository.Products.Dtos.ChangePassword;
 using MyCart.Service.Dtos;
 using MyCart.Service.Dtos.UserLogins;
 
@@ -13,5 +14,6 @@ namespace MyCart.Service.UserLogins
         Task DeleteUserLoginAsync(int id);
 
         Task<(string Token, string Message)> UserLogin(LoginDto loginDto);
+        Task<(bool IsSuccess, string Message)> UserLoginAsync(int userId, ChangePasswordDto changePasswordDto);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MyCart.Domain.Users;
 using MyCart.Repository.GenericRepository;
+using MyCart.Repository.Products.Dtos.ChangePassword;
 
 namespace MyCart.Repository.Users
 {
@@ -11,5 +12,6 @@ namespace MyCart.Repository.Users
 
         Task<User> GetByEmailAsync(string email);
         Task<User> GetByNameAsync(string name);
+        Task<(bool IsSuccess,string Message)> ChangePassword( int userId,ChangePasswordDto changePasswordDto);
     }
 }

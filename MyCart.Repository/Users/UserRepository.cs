@@ -4,6 +4,7 @@ using MyCart.Domain.Categorys;
 using MyCart.Domain.Users;
 using MyCart.Repository.GenericRepository;
 using MyCart.Repository.GenericRepositorys;
+using MyCart.Repository.Products.Dtos.ChangePassword;
 using System.Threading.Tasks;
 
 namespace MyCart.Repository.Users
@@ -55,6 +56,27 @@ namespace MyCart.Repository.Users
         {
             return await _context.Users
                 .FirstOrDefaultAsync(c => c.Name.ToLower()==name.ToLower());
+        }
+
+        public async Task<(bool IsSuccess, string Message)> ChangePassword(int userId,ChangePasswordDto changePasswordDto)
+        {
+            var user= await _context.Users.AnyAsync(x=>x.Id==userId);
+            if (!user)
+            {
+                return (false,"user not found");
+            }
+           
+            var useLogin=await _context.UserLogins.FirstOrDefaultAsync(x=>x.UserId==userId&&x.Password==changePasswordDto.OldPassword);
+            if (useLogin == null)
+            {
+                return (false, "Your old password was incorrect");
+            }
+
+            useLogin.Password = changePasswordDto.NewPassword;
+             _context.UserLogins.Update(useLogin);
+            _context.SaveChanges();
+            return (true,"Change successfully");
+
         }
     }
 }

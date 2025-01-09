@@ -30,6 +30,23 @@ namespace MyCart.Repository.Products
                 .ToListAsync();
         }
 
+        public async Task<bool> RemoveImageAsync(int productId, int imageId)
+        {
+            var product = await _context.Products.AnyAsync(x => x.Id == productId);
+            if (product == null)
+            {
+                return false;
+            }
+            var productImage = await _context.ProductImages.FirstOrDefaultAsync(x => x.Id == imageId);
+            if (productImage == null)
+            {
+                return false;
+            }
+             _context.ProductImages.Remove(productImage);
+            _context.SaveChanges();
+            return true;
+        }
+
         public async Task<IEnumerable<Product>> SearchProductAsync(SearchProductDto searchProductDto)
         {
             var query = await _context.Products.Include(x=>x.Category).ToListAsync();
@@ -57,6 +74,18 @@ namespace MyCart.Repository.Products
 
             }
             return query;
+        }
+
+        public async Task<bool> UploadProductImage(int productId, string imagePath)
+        {
+            var image = new ProductImages
+            {
+                ImagePath = imagePath,
+                ProductId = productId,
+            };
+            await _context.ProductImages.AddAsync(image);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

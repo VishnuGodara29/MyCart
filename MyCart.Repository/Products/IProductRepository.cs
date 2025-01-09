@@ -10,6 +10,9 @@ namespace MyCart.Repository.Products
         Task<IEnumerable<Product>> SearchProductAsync(SearchProductDto searchProductDto);
 
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
-        
+        Task<bool>UploadProductImage(int productId, string imagePath);
+        Task<bool> RemoveImageAsync(int productId, int imageId);
+
+
     }
 }

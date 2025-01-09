@@ -14,5 +14,7 @@ namespace MyCart.Service.Products
         Task<ProductDTO> UpdateProductAsync(int id, ProductDTO productDto);
         Task DeleteProductAsync(int id);
         Task<List<ProductDTO>> SearchProductAsync(SearchProductDto searchProductDto);
+        Task<bool> UploadImage(int productId, string ImgaeUrl);
+        Task<bool> RemoveImageAsync(int productId, int imageId);
     }
 }

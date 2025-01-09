@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyCart.Domain.Products;
 using MyCart.Repository.Products.Dtos;
 using MyCart.Service.Dtos;
 using MyCart.Service.Products;
@@ -11,10 +12,15 @@ namespace MyCart.WebApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private const string ImageUrl = "https://localhost:7181/Documents";
 
-        public ProductController(IProductService productService)
+
+
+        public ProductController(IProductService productService, IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -85,5 +91,46 @@ namespace MyCart.WebApi.Controllers
             }
             return Ok(data);
         }
+        [HttpPut("UploadProductImage {productId}")]
+        public async Task<ActionResult> UploadProductImage(int productId,IFormFile Image)
+        {
+            var product= await _productService.GetProductByIdAsync(productId);
+            if(product==null)
+            {
+                return NotFound($"Product not found on the Id= {productId}");
+            }
+            var fileExtension = Path.GetExtension(Image.FileName).ToLower();
+            var filename = $"{Guid.NewGuid()}{fileExtension}";
+            var filepath = Path.Combine(_webHostEnvironment.WebRootPath, "Documents", filename);
+            using (var filestream = new FileStream(filepath, FileMode.Create))
+            {
+                await Image.CopyToAsync(filestream);
+            }
+            string imagePath = $"{ImageUrl}/{filename}";
+
+
+
+             var image= await _productService.UploadImage(productId, imagePath);
+
+            if (!image)
+            {
+                return BadRequest("Image not added");
+            }
+            return Ok("Image updated successfully..");
+            
+
+
+        }
+        [HttpDelete("{productId}/image{imageId}")]
+        public async Task<ActionResult> DeleteProductImage(int productId,int imageId)
+        {
+            var deleteImage= await _productService.RemoveImageAsync(productId,imageId);
+            if (!deleteImage)
+            {
+                return BadRequest("Image not deleted");
+            }
+            return Ok("Image Deleted successfully...");
+        }
+
     }
 }

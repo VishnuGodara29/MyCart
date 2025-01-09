@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyCart.Domain.Users;
 using MyCart.Repository.Logins;
+using MyCart.Repository.Products.Dtos.ChangePassword;
 using MyCart.Repository.Users;
 using MyCart.Service.Dtos;
 using MyCart.Service.Dtos.UserLogins;
@@ -81,6 +82,16 @@ namespace MyCart.Service.UserLogins
             }
                 return(token,"Login successfully..");
 
+        }
+
+        public async Task<(bool IsSuccess, string Message)> UserLoginAsync(int userId, ChangePasswordDto changePasswordDto)
+        {
+            var chagnePassowrd= await _userRepository.ChangePassword(userId,changePasswordDto);
+            if (chagnePassowrd.IsSuccess==false)
+            {
+                return (false,chagnePassowrd.Message);
+            }
+            return (true,chagnePassowrd.Message);
         }
     }
 }

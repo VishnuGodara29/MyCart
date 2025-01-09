@@ -82,5 +82,25 @@ namespace MyCart.Service.Products
             var product = await _productRepository.SearchProductAsync(searchProductDto);
             return _mapper.Map<List<ProductDTO>>(product);
         }
+
+        public async Task<bool> UploadImage(int productId, string ImgaeUrl)
+        {
+           var productImage= await _productRepository.UploadProductImage(productId, ImgaeUrl);
+            if (!productImage)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> RemoveImageAsync(int productId, int imageId)
+        {
+            var removeImage= await _productRepository.RemoveImageAsync(productId, imageId);
+            if (!removeImage)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

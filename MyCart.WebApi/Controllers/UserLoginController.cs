@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
+using MyCart.Repository.Products.Dtos.ChangePassword;
 using MyCart.Service.Dtos;
 using MyCart.Service.Dtos.UserLogins;
 using MyCart.Service.UserLogins;
+using System.Security.Claims;
 
 namespace MyCart.WebApi.Controllers
 {
@@ -65,5 +69,28 @@ namespace MyCart.WebApi.Controllers
            var data=await _userLoginService.UserLogin(loginDto);
             return Ok(data.Token);
         }
+        [Authorize]
+        [HttpPut]
+        public async Task<ActionResult> ChangePassword([FromForm]ChangePasswordDto changePasswordDto)
+        {
+            var userId = Convert.ToInt32(HttpContext.User.FindFirstValue("Id"));
+            if (changePasswordDto.OldPassword==changePasswordDto.NewPassword )
+            {
+                return BadRequest("Old password and new Password are same..");
+            }
+            if(changePasswordDto.NewPassword!=changePasswordDto.ConfirmPassword ) 
+            {
+                return BadRequest("New password and confirm password is not match");
+            }
+
+
+            var changepassword = await _userLoginService.UserLoginAsync(userId, changePasswordDto);
+            if (changepassword.IsSuccess == true)
+            {
+                return Ok(changepassword.Message);
+            }
+            return BadRequest(changepassword.Message);
+        }
+        
     }
 }
