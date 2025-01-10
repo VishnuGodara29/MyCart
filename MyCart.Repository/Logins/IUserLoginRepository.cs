@@ -8,6 +8,7 @@ namespace MyCart.Repository.Logins
         Task<UserLogin> GetUserLoginByCodeAsync(string Name);
 
         Task<bool> VerifyUserCredentialsAsync(string Name, string password);
+        Task<UserLogin> GetByUserId(int UserId);
     }
 }
 

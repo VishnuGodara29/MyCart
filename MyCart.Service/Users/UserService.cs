@@ -95,13 +95,13 @@ namespace MyCart.Service.Users
         {
             var user = _mapper.Map<User>(userDto);
             await _userRepository.AddAsync(user);
-            var userlogIn = new UserLogin
+            var userLogIn = new UserLogin
             {
                 Name=userDto.Name,
                 Password=userDto.Password,
                 UserId=user.Id,
             };
-            await _userLoginRepository.AddAsync(userlogIn);
+            await _userLoginRepository.AddAsync(userLogIn);
             string subject = "For user Creation";
             string body = $"This Mail for the UserName and password UserName={userDto.Name} and password ={userDto.Password}";
 
@@ -121,6 +121,25 @@ namespace MyCart.Service.Users
             return userDtos; // Return the list of DTOs
         }
 
+        public async Task<(bool IsSuccess,string Message)> GetByEmail(string emailId)
+        {
+            var user= await _userRepository.GetByEmailAsync(emailId);
+            if(user==null)
+            {
+                return (false,"This mail is not register");
+            }
+            var userpassword = await _userLoginRepository.GetByUserId(user.Id);
+            if (userpassword == null)
+            {
+                return (false, "There is no user on provided  Email");
+            }
+            string subject = "User login id and password";
+            string body = $"User name= {userpassword.Name} User password= {userpassword.Password}";
+             await _emailService.SendEmail(emailId,subject,body);
 
+
+            return (true, "User name and password are sent on your registered email address...");
+
+        }
     }
 }

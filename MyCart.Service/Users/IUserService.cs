@@ -21,6 +21,7 @@ namespace MyCart.Service.Users
         Task<List<UserInDto>> GetAllUsersAsync();
         Task<User> GetByNameAsync(string name);
         Task<User> GetByPasswordAsync(string Password);
+        Task<(bool IsSuccess, string Message)> GetByEmail(string emailId);
 
 
     }

@@ -87,23 +87,23 @@ namespace MyCart.WebApi
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
 
-.AddJwtBearer(options =>
-{
-    var issuer = builder.Configuration["JwtSettings:Issuer"];
-    var audience = builder.Configuration["JwtSettings:Audience"];
-    var secretKey = builder.Configuration["JwtSettings:SecretKey"];
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-        RoleClaimType = ClaimTypes.Role
-    };
-});
+                .AddJwtBearer(options =>
+                {
+                    var issuer = builder.Configuration["JwtSettings:Issuer"];
+                    var audience = builder.Configuration["JwtSettings:Audience"];
+                    var secretKey = builder.Configuration["JwtSettings:SecretKey"];
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                        RoleClaimType = ClaimTypes.Role
+                    };
+                });
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyCart API", Version = "v1" });

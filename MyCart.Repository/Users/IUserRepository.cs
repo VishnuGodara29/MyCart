@@ -13,5 +13,7 @@ namespace MyCart.Repository.Users
         Task<User> GetByEmailAsync(string email);
         Task<User> GetByNameAsync(string name);
         Task<(bool IsSuccess,string Message)> ChangePassword( int userId,ChangePasswordDto changePasswordDto);
+
+        
     }
 }

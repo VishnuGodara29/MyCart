@@ -47,9 +47,14 @@ namespace MyCart.Repository.Users
             throw new NotImplementedException();
         }
 
-        Task<User> IUserRepository.GetByEmailAsync(string email)
+        async Task<User> IUserRepository.GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var user= await _context.Users.FirstOrDefaultAsync(u=>u.Email == email);
+            if(user != null)
+            {
+                return user;
+            }
+            return null;
         }
 
         public async Task<User> GetByNameAsync(string name)
@@ -78,5 +83,7 @@ namespace MyCart.Repository.Users
             return (true,"Change successfully");
 
         }
+
+       
     }
 }

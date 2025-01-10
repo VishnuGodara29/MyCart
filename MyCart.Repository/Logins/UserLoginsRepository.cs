@@ -48,6 +48,16 @@ namespace MyCart.Repository.Logins
             throw new NotImplementedException();
         }
 
+        public async Task<UserLogin> GetByUserId(int UserId)
+        {
+           var userLogin= await _dataContext.UserLogins.FirstOrDefaultAsync(x=>x.UserId==UserId);
+            if (userLogin != null)
+            {
+                return userLogin;
+            }
+            return null;
+        }
+
         public async Task<UserLogin> GetUserLoginByCodeAsync(string Name)
         {
             var data = await _dataContext.UserLogins.Where(x => x.Name == Name).FirstOrDefaultAsync();
